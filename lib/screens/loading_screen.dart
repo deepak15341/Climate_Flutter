@@ -1,22 +1,45 @@
+import 'package:clima/screens/city_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:clima/services/location.dart';
 
 class LoadingScreen extends StatefulWidget {
+  const LoadingScreen({super.key});
+
   @override
   _LoadingScreenState createState() => _LoadingScreenState();
 }
 
 class _LoadingScreenState extends State<LoadingScreen> {
+  Location location = Location();
+
+  @override
+  void initState() {
+   getLocation();
+    super.initState();
+  }
+
+  Future<void> getLocation() async {
+    await location.getCurrentLocation();
+    print(location.longitude);
+    print(location.latitude);
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
         child: ElevatedButton(
-          onPressed: () {
-            //Get the current location
+          onPressed: ()  {
+            Navigator.push(context, MaterialPageRoute(builder: (context) => const CityScreen(),));
           },
-          child: Text('Get Location'),
+          child: const Text("Get Location"),
         ),
       ),
     );
   }
+
 }
+
+
+

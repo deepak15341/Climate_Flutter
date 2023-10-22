@@ -1,3 +1,4 @@
+import 'package:clima/screens/loading_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:clima/utilities/constants.dart';
 
@@ -13,7 +14,7 @@ class _LocationScreenState extends State<LocationScreen> {
       body: Container(
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: AssetImage('images/location_background.jpg'),
+            image: const AssetImage('images/location_background.jpg'),
             fit: BoxFit.cover,
             colorFilter: ColorFilter.mode(
                 Colors.white.withOpacity(0.8), BlendMode.dstATop),
@@ -30,21 +31,23 @@ class _LocationScreenState extends State<LocationScreen> {
                 children: <Widget>[
                   ElevatedButton(
                     onPressed: () {},
-                    child: Icon(
+                    child: const Icon(
                       Icons.near_me,
                       size: 50.0,
                     ),
                   ),
                   ElevatedButton(
-                    onPressed: () {},
-                    child: Icon(
+                    onPressed: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => const LoadingScreen(),));
+                    },
+                    child: const Icon(
                       Icons.location_city,
                       size: 50.0,
                     ),
                   ),
                 ],
               ),
-              Padding(
+              const Padding(
                 padding: EdgeInsets.only(left: 15.0),
                 child: Row(
                   children: <Widget>[
@@ -59,7 +62,7 @@ class _LocationScreenState extends State<LocationScreen> {
                   ],
                 ),
               ),
-              Padding(
+              const Padding(
                 padding: EdgeInsets.only(right: 15.0),
                 child: Text(
                   "It's 🍦 time in San Francisco!",
