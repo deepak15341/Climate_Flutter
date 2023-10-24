@@ -25,14 +25,14 @@ class _LocationScreenState extends State<LocationScreen> {
     dataFromNetwork = widget.dataFromNetwork;
     splitted = dataFromNetwork.split(',');
     condition = splitted[0];
-    temperture = splitted[1];
+    temperture = (double.parse(splitted[1])-273).toStringAsFixed(0);
     address = splitted[2];
 
   }
 
   @override
   Widget build(BuildContext context) {
-    print('$condition $temperture $address');
+/*    print('$condition $temperture $address');*/
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
@@ -61,7 +61,7 @@ class _LocationScreenState extends State<LocationScreen> {
                        dataFromNetwork = freshDatafromNetwork;
                        splitted = dataFromNetwork.split(',');
                        condition = splitted[0];
-                       temperture = splitted[1];
+                       temperture = (double.parse(splitted[1])-273).toStringAsFixed(0);
                        address = splitted[2];
                      });
 
