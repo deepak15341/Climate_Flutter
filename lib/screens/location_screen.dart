@@ -8,6 +8,7 @@ import '../services/networking.dart';
 
 class LocationScreen extends StatefulWidget {
   String dataFromNetwork;
+
   LocationScreen(this.dataFromNetwork, {super.key});
   @override
   _LocationScreenState createState() => _LocationScreenState();
@@ -16,15 +17,22 @@ class LocationScreen extends StatefulWidget {
 class _LocationScreenState extends State<LocationScreen> {
 
   late String dataFromNetwork;
+  late List<String> splitted;
+  late String condition,temperture,address;
   @override
   void initState() {
     super.initState();
     dataFromNetwork = widget.dataFromNetwork;
-    //your code here
-   /* print(dataFromNetwork);*/
+    splitted = dataFromNetwork.split(',');
+    condition = splitted[0];
+    temperture = splitted[1];
+    address = splitted[2];
+
   }
+
   @override
   Widget build(BuildContext context) {
+    print('$condition $temperture $address');
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
@@ -48,7 +56,14 @@ class _LocationScreenState extends State<LocationScreen> {
                     onPressed: () async {
                      await Location().getCurrentLocation();
                      String freshDatafromNetwork = await Networking().getData();
-                     print(freshDatafromNetwork);
+                     /*print(freshDatafromNetwork);*/
+                     setState(() {
+                       dataFromNetwork = freshDatafromNetwork;
+                       splitted = dataFromNetwork.split(',');
+                       condition = splitted[0];
+                       temperture = splitted[1];
+                       address = splitted[2];
+                     });
 
                     },
                     child: const Icon(
@@ -66,25 +81,25 @@ class _LocationScreenState extends State<LocationScreen> {
                   ),
                 ],
               ),
-              const Padding(
-                padding: EdgeInsets.only(left: 15.0),
+               Padding(
+                padding: const EdgeInsets.only(left: 15.0),
                 child: Row(
                   children: <Widget>[
                     Text(
-                      '32°',
+                      '$temperture°',
                       style: kTempTextStyle,
                     ),
-                    Text(
+                    const Text(
                       '☀️',
                       style: kConditionTextStyle,
                     ),
                   ],
                 ),
               ),
-              const Padding(
+               Padding(
                 padding: EdgeInsets.only(right: 15.0),
                 child: Text(
-                  "It's 🍦 time in San Francisco!",
+                  "It's 🍦 time in $address",
                   textAlign: TextAlign.right,
                   style: kMessageTextStyle,
                 ),
