@@ -18,7 +18,7 @@ class _LocationScreenState extends State<LocationScreen> {
 
   late String dataFromNetwork;
   late List<String> splitted;
-  late String condition,temperture,address;
+  late String condition,temperture,city;
   @override
   void initState() {
     super.initState();
@@ -26,7 +26,7 @@ class _LocationScreenState extends State<LocationScreen> {
     splitted = dataFromNetwork.split(',');
     condition = splitted[0];
     temperture = (double.parse(splitted[1])-273).toStringAsFixed(0);
-    address = splitted[2];
+    city = splitted[2];
 
   }
 
@@ -56,13 +56,12 @@ class _LocationScreenState extends State<LocationScreen> {
                     onPressed: () async {
                      await Location().getCurrentLocation();
                      String freshDatafromNetwork = await Networking().getData();
-                     /*print(freshDatafromNetwork);*/
                      setState(() {
                        dataFromNetwork = freshDatafromNetwork;
                        splitted = dataFromNetwork.split(',');
                        condition = splitted[0];
                        temperture = (double.parse(splitted[1])-273).toStringAsFixed(0);
-                       address = splitted[2];
+                       city = splitted[2];
                      });
 
                     },
@@ -99,7 +98,7 @@ class _LocationScreenState extends State<LocationScreen> {
                Padding(
                 padding: EdgeInsets.only(right: 15.0),
                 child: Text(
-                  "It's 🍦 time in $address",
+                  "It's 🍦 time in $city",
                   textAlign: TextAlign.right,
                   style: kMessageTextStyle,
                 ),
