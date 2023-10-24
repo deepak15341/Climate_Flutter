@@ -1,13 +1,28 @@
+
 import 'package:clima/screens/loading_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:clima/utilities/constants.dart';
+import 'package:clima/services/location.dart';
+
+import '../services/networking.dart';
 
 class LocationScreen extends StatefulWidget {
+  String dataFromNetwork;
+  LocationScreen(this.dataFromNetwork);
   @override
   _LocationScreenState createState() => _LocationScreenState();
 }
 
 class _LocationScreenState extends State<LocationScreen> {
+
+  late String dataFromNetwork;
+  @override
+  void initState() {
+    super.initState();
+    dataFromNetwork = widget.dataFromNetwork;
+    //your code here
+   /* print(dataFromNetwork);*/
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,7 +45,12 @@ class _LocationScreenState extends State<LocationScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () async {
+                     await Location().getCurrentLocation();
+                     String freshDatafromNetwork = await Networking().getData();
+                     print(freshDatafromNetwork);
+
+                    },
                     child: const Icon(
                       Icons.near_me,
                       size: 50.0,
@@ -38,7 +58,6 @@ class _LocationScreenState extends State<LocationScreen> {
                   ),
                   ElevatedButton(
                     onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => const LoadingScreen(),));
                     },
                     child: const Icon(
                       Icons.location_city,

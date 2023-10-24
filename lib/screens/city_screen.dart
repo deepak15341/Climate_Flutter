@@ -40,7 +40,6 @@ class _CityScreenState extends State<CityScreen> {
               ),
               ElevatedButton(
                 onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => LocationScreen(),));
                 },
                 child: const Text(
                   'Get Weather',

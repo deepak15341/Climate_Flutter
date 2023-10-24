@@ -1,44 +1,55 @@
-
-import 'package:clima/screens/city_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:clima/services/location.dart';
+import '../services/networking.dart';
+import 'location_screen.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+
 
 
 class LoadingScreen extends StatefulWidget {
-  const LoadingScreen({super.key});
+   const LoadingScreen({super.key});
+
 
   @override
-  _LoadingScreenState createState() => _LoadingScreenState();
+  LoadingScreenState createState() => LoadingScreenState();
 }
 
-class _LoadingScreenState extends State<LoadingScreen> {
+class LoadingScreenState extends State<LoadingScreen> {
+  Location location = Location();
+
 
   @override
   void initState() {
     super.initState();
-    Location().getLocation();
+   getLocation();
   }
 
+    void getLocation() async {
+    await location.getCurrentLocation();
+    String datafromNetwork = await Networking().getData();
+    Navigator.push(context, MaterialPageRoute(builder: (context) => LocationScreen(datafromNetwork),));
 
+
+  }
 
 
   @override
   Widget build(BuildContext context) {
 
 
-    return Scaffold(
+    //mcontext = context;
+    return const Scaffold(
       body: Center(
-        child: ElevatedButton(
-          onPressed: ()  {
-            Navigator.push(context, MaterialPageRoute(builder: (context) => const CityScreen(),));
-          },
-          child: const Text("Get Location"),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SpinKitSpinningLines(color: Colors.white,size: 50.0,),
+            SizedBox(height: 10,),
+            Text("Loading...",style: TextStyle(color: Colors.white,fontSize: 36,fontWeight: FontWeight.bold),)
+          ],
         ),
+
       ),
     );
   }
-
 }
-
-
-
