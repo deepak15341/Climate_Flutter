@@ -8,7 +8,7 @@ import '../services/networking.dart';
 
 class LocationScreen extends StatefulWidget {
   String dataFromNetwork;
-  LocationScreen(this.dataFromNetwork);
+  LocationScreen(this.dataFromNetwork, {super.key});
   @override
   _LocationScreenState createState() => _LocationScreenState();
 }
