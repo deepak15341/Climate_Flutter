@@ -1,8 +1,12 @@
 
+import 'package:clima/screens/city_screen.dart';
 import 'package:clima/screens/loading_screen.dart';
+
 import 'package:flutter/material.dart';
 import 'package:clima/utilities/constants.dart';
 import 'package:clima/services/location.dart';
+
+import 'package:clima/services/weather.dart';
 
 import '../services/networking.dart';
 
@@ -15,6 +19,7 @@ class LocationScreen extends StatefulWidget {
 }
 
 class _LocationScreenState extends State<LocationScreen> {
+  WeatherModel weatherModel = WeatherModel();
 
   late String dataFromNetwork;
   late List<String> splitted;
@@ -25,10 +30,24 @@ class _LocationScreenState extends State<LocationScreen> {
     dataFromNetwork = widget.dataFromNetwork;
     splitted = dataFromNetwork.split(',');
     condition = splitted[0];
-    temperture = (double.parse(splitted[1])-273).toStringAsFixed(0);
+    temperture = (double.parse(splitted[1])-273.15).toStringAsFixed(0);
     city = splitted[2];
-
   }
+
+/*
+  void getdatabycityName() async {
+    await Location().getCurrentLocation();
+    String freshDatafromNetwork = await Networking().getData('latlong');
+
+    setState(() {
+      dataFromNetwork = freshDatafromNetwork;
+      splitted = dataFromNetwork.split(',');
+      condition = splitted[0];
+      temperture = (double.parse(splitted[1])-273.15).toStringAsFixed(0);
+      city = splitted[2];
+    });
+  }
+*/
 
   @override
   Widget build(BuildContext context) {
@@ -55,24 +74,36 @@ class _LocationScreenState extends State<LocationScreen> {
                   ElevatedButton(
                     onPressed: () async {
                      await Location().getCurrentLocation();
-                     String freshDatafromNetwork = await Networking().getData();
+                     String freshDatafromNetwork = await Networking().getData('latlong');
                      setState(() {
                        dataFromNetwork = freshDatafromNetwork;
                        splitted = dataFromNetwork.split(',');
                        condition = splitted[0];
-                       temperture = (double.parse(splitted[1])-273).toStringAsFixed(0);
+                       temperture = (double.parse(splitted[1])-273.15).toStringAsFixed(0);
                        city = splitted[2];
                      });
 
-                    },
+                    },style: ElevatedButton.styleFrom(backgroundColor: const Color(0x000000ff)),
                     child: const Icon(
                       Icons.near_me,
                       size: 50.0,
                     ),
                   ),
                   ElevatedButton(
-                    onPressed: () {
-                    },
+                    onPressed: () async {
+                      var cityName = await Navigator.push(context, MaterialPageRoute(builder: (context) => CityScreen(),),);
+                      if(cityName!=null){
+                        String freshDatafromNetwork = await Networking().getData(cityName);
+                        setState(() {
+                          dataFromNetwork = freshDatafromNetwork;
+                          splitted = dataFromNetwork.split(',');
+                          condition = splitted[0];
+                          temperture = (double.parse(splitted[1])-273.15).toStringAsFixed(0);
+                          city = splitted[2];
+                        });
+                      }
+
+                    },style: ElevatedButton.styleFrom(backgroundColor: const Color(0x000000ff)),
                     child: const Icon(
                       Icons.location_city,
                       size: 50.0,
@@ -88,17 +119,17 @@ class _LocationScreenState extends State<LocationScreen> {
                       '$temperture°',
                       style: kTempTextStyle,
                     ),
-                    const Text(
-                      '☀️',
+                    Text(
+                      weatherModel.getWeatherIcon(int.parse(condition)),
                       style: kConditionTextStyle,
                     ),
                   ],
                 ),
               ),
                Padding(
-                padding: EdgeInsets.only(right: 15.0),
+                padding: EdgeInsets.all(20),
                 child: Text(
-                  "It's 🍦 time in $city",
+                  "${weatherModel.getMessage(int.parse(temperture))} in $city",
                   textAlign: TextAlign.right,
                   style: kMessageTextStyle,
                 ),

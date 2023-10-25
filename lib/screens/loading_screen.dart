@@ -26,10 +26,9 @@ class LoadingScreenState extends State<LoadingScreen> {
 
     void getLocation() async {
     await location.getCurrentLocation();
-    String datafromNetwork = await Networking().getData();
+    String datafromNetwork = await Networking().getData('latlong');
+    Navigator.pop(context);
     Navigator.push(context, MaterialPageRoute(builder: (context) => LocationScreen(datafromNetwork),));
-
-
   }
 
 
