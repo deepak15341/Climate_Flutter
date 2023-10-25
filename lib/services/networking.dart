@@ -1,5 +1,7 @@
 import 'dart:convert';
 import 'package:clima/services/location.dart';
+import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:clima/screens/loading_screen.dart';
 
@@ -24,6 +26,11 @@ class Networking{
       String  data = "$condition , $temperature , $cityName";
       return data;
     }else{
+      Fluttertoast.showToast(
+          msg: 'error ${response.statusCode} ',
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.CENTER,
+          backgroundColor: Colors.grey);
       throw response.statusCode;
     }
   }
